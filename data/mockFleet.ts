@@ -2,7 +2,7 @@ import type { Satellite } from "../types/satellite";
 
 export const mockFleet: Satellite[] = [
     {
-        id: "SAT-01",
+        id: "1",
         name: "Satélite 1",
         systemStatus: "operational",
         energy: 100,
@@ -10,7 +10,7 @@ export const mockFleet: Satellite[] = [
         orbitalStability:  "stable",
     },
     {
-        id: "SAT-02",
+        id: "2",
         name: "Satélite 2",
         systemStatus: "operational",
         energy: 70,
@@ -18,7 +18,7 @@ export const mockFleet: Satellite[] = [
         orbitalStability:  "stable",
     },
     {
-        id: "SAT-03",
+        id: "3",
         name: "Satélite 3",
         systemStatus: "failure",
         energy: 0,

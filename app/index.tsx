@@ -8,6 +8,8 @@ const Dashboard = () => {
 
     const { fleet } = useFleet();
 
+    console.log(fleet);
+
     const monitoredSatellites = fleet.length;
 
     const operationalSatellites = fleet.filter(

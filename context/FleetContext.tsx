@@ -1,4 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import React, {
+    createContext,
+    useContext,
+    useState,
+} from "react";
 
 import { mockFleet } from "@/data/mockFleet";
 import type { Satellite } from "@/types/satellite";
@@ -17,6 +21,8 @@ export const FleetProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
+    console.log("FleetProvider foi criado");
+
     const [fleet, setFleet] = useState(mockFleet);
 
     return (
