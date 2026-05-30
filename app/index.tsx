@@ -51,6 +51,7 @@ const Dashboard = () => {
             {mockFleet.map((satellite) => (
                 <SatelliteCard
                     key={satellite.id}
+                    id={satellite.id}
                     name={satellite.name}
                     energy={satellite.energy}
                     communication={satellite.communication}

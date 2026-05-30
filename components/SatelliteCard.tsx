@@ -1,7 +1,9 @@
+import { router } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 type SatelliteCardProps = {
+    id: string;
     name: string;
     energy: number;
     communication: boolean;
@@ -9,38 +11,43 @@ type SatelliteCardProps = {
 };
 
 const SatelliteCard = ({
+    id,
     name,
     energy,
     communication,
     systemStatus,
 }: SatelliteCardProps) => {
     return (
-        <View
-            style={{
-                borderWidth: 1,
-                borderRadius: 10,
-                padding: 12,
-                marginBottom: 12,
-            }}
+        <Pressable
+            onPress={() => router.push(`/satellite/${id}`)}
         >
-            <Text
+            <View
                 style={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                    marginBottom: 8,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                    padding: 12,
+                    marginBottom: 12,
                 }}
             >
-                {name}
-            </Text>
+                <Text
+                    style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        marginBottom: 8,
+                    }}
+                >
+                    {name}
+                </Text>
 
-            <Text>Energia: {energy}%</Text>
+                <Text>Energia: {energy}%</Text>
 
-            <Text>
-                Comunicação: {communication ? "Online" : "Offline"}
-            </Text>
+                <Text>
+                    Comunicação: {communication ? "Online" : "Offline"}
+                </Text>
 
-            <Text>Status: {systemStatus}</Text>
-        </View>
+                <Text>Status: {systemStatus}</Text>
+            </View>
+        </Pressable>
     );
 };
 
