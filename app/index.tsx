@@ -2,20 +2,23 @@ import React from "react";
 import { Text, View } from "react-native";
 
 import SatelliteCard from "@/components/SatelliteCard";
-import { mockFleet } from "@/data/mockFleet";
+import { useFleet } from "@/context/FleetContext";
 
 const Dashboard = () => {
-    const monitoredSatellites = mockFleet.length;
 
-    const operationalSatellites = mockFleet.filter(
+    const { fleet } = useFleet();
+
+    const monitoredSatellites = fleet.length;
+
+    const operationalSatellites = fleet.filter(
         (satellite) => satellite.systemStatus === "operational"
     ).length;
 
-    const lowEnergySatellites = mockFleet.filter(
+    const lowEnergySatellites = fleet.filter(
         (satellite) => satellite.energy < 20
     ).length;
 
-    const offlineSatellites = mockFleet.filter(
+    const offlineSatellites = fleet.filter(
         (satellite) => !satellite.communication
     ).length;
 
@@ -48,7 +51,7 @@ const Dashboard = () => {
                 <Text>Satélites sem comunicação: {offlineSatellites}</Text>
             </View>
 
-            {mockFleet.map((satellite) => (
+            {fleet.map((satellite) => (
                 <SatelliteCard
                     key={satellite.id}
                     id={satellite.id}

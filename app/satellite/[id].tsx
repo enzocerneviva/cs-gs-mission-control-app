@@ -2,12 +2,14 @@ import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
-import { mockFleet } from "@/data/mockFleet";
+import { useFleet } from "@/context/FleetContext";
 
 const SatelliteDetails = () => {
-    const { id } = useLocalSearchParams();
 
-    const satellite = mockFleet.find(
+    const { id } = useLocalSearchParams();
+    const { fleet } = useFleet();
+
+    const satellite = fleet.find(
         (sat) => sat.id === id
     );
 
