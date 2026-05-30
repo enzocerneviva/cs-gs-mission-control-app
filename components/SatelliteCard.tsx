@@ -18,12 +18,20 @@ const SatelliteCard = ({
         <View
             style={{
                 borderWidth: 1,
+                borderRadius: 10,
                 padding: 12,
-                marginVertical: 8,
-                borderRadius: 8,
+                marginBottom: 12,
             }}
         >
-            <Text>{name}</Text>
+            <Text
+                style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    marginBottom: 8,
+                }}
+            >
+                {name}
+            </Text>
 
             <Text>Energia: {energy}%</Text>
 
