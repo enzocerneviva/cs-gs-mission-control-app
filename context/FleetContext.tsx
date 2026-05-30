@@ -5,6 +5,9 @@ import type { Satellite } from "@/types/satellite";
 
 type FleetContextType = {
     fleet: Satellite[];
+    setFleet: React.Dispatch<
+        React.SetStateAction<Satellite[]>
+    >;
 };
 
 const FleetContext = createContext<FleetContextType | null>(null);
@@ -14,10 +17,15 @@ export const FleetProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    const [fleet] = useState(mockFleet);
+    const [fleet, setFleet] = useState(mockFleet);
 
     return (
-        <FleetContext.Provider value={{ fleet }}>
+        <FleetContext.Provider
+            value={{
+                fleet,
+                setFleet,
+            }}
+        >
             {children}
         </FleetContext.Provider>
     );
