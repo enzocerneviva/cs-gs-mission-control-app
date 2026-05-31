@@ -1,11 +1,14 @@
 import { Stack } from "expo-router";
 
 import { FleetProvider } from "@/context/FleetContext";
+import { LogProvider } from "@/context/LogContext";
 
 export default function Layout() {
     return (
         <FleetProvider>
-            <Stack />
+            <LogProvider>
+                <Stack />
+            </LogProvider>
         </FleetProvider>
     );
 }

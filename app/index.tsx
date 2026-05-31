@@ -71,6 +71,13 @@ const Dashboard = () => {
                     router.push("/control-painel")
                 }
             />
+
+            <Button
+                title="Ver Histórico de Logs"
+                onPress={() =>
+                    router.push("/logs")
+                }
+            />
         </View>
     );
 };

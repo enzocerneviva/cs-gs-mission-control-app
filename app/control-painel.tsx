@@ -8,9 +8,11 @@ import {
 } from "react-native";
 
 import { useFleet } from "@/context/FleetContext";
+import { useLogs } from "@/context/LogContext";
 
 const ControlPanel = () => {
     const { fleet, setFleet } = useFleet();
+    const { addLog } = useLogs();
 
     const [energy, setEnergy] = useState("");
 
@@ -43,6 +45,10 @@ const ControlPanel = () => {
 
         console.log(updatedFleet);
         setFleet(updatedFleet);
+
+        addLog(
+            `Energia do SAT-01 alterada para ${energyValue}%`
+        );
 
         setEnergy("");
     };
