@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
     Button,
@@ -77,6 +78,13 @@ const ControlPanel = () => {
             <Button
                 title="Salvar"
                 onPress={updateSatellite}
+            />
+
+            <Button
+                title="Voltar ao Dashboard"
+                onPress={() =>
+                    router.push("/")
+                }
             />
         </View>
     );

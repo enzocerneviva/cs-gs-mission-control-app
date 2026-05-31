@@ -1,5 +1,6 @@
+import { router } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
 import SatelliteCard from "@/components/SatelliteCard";
 import { useFleet } from "@/context/FleetContext";
@@ -63,6 +64,13 @@ const Dashboard = () => {
                     systemStatus={satellite.systemStatus}
                 />
             ))}
+
+            <Button
+                title="Abrir Painel de Controle"
+                onPress={() =>
+                    router.push("/control-painel")
+                }
+            />
         </View>
     );
 };
