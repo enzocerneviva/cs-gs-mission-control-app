@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import React from "react";
 import { Button, Text, View } from "react-native";
 
+import MetricCard from "@/components/MetricCard";
 import SatelliteCard from "@/components/SatelliteCard";
 import { useFleet } from "@/context/FleetContext";
 
@@ -45,13 +46,27 @@ const Dashboard = () => {
                     borderRadius: 8,
                 }}
             >
-                <Text>Satélites monitorados: {monitoredSatellites}</Text>
 
-                <Text>Satélites operando: {operationalSatellites}</Text>
+                <MetricCard
+                    title="Satélites Monitorados"
+                    value={monitoredSatellites}
+                />
 
-                <Text>Satélites com energia baixa: {lowEnergySatellites}</Text>
+                <MetricCard
+                    title="Operacionais"
+                    value={operationalSatellites}
+                />
 
-                <Text>Satélites sem comunicação: {offlineSatellites}</Text>
+                <MetricCard
+                    title="Energia Baixa"
+                    value={lowEnergySatellites}
+                />
+
+                <MetricCard
+                    title="Sem Comunicação"
+                    value={offlineSatellites}
+                />
+                
             </View>
 
             {fleet.map((satellite) => (

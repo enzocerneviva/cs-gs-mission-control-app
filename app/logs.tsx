@@ -3,10 +3,10 @@ import React from "react";
 import {
     Button,
     ScrollView,
-    Text,
-    View
+    Text
 } from "react-native";
 
+import LogItem from '@/components/LogItem';
 import { useLogs } from "@/context/LogContext";
 
 const Logs = () => {
@@ -30,26 +30,11 @@ const Logs = () => {
                 </Text>
             ) : (
                 logs.map((log) => (
-                    <View
+                    <LogItem
                         key={log.id}
-                        style={{
-                            borderWidth: 1,
-                            borderRadius: 8,
-                            padding: 12,
-                            marginBottom: 10,
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontWeight: "bold",
-                            }}
-                        >
-                            {log.timestamp}
-                        </Text>
-
-                        <Text>{log.message}</Text>
-
-                    </View>
+                        timestamp={log.timestamp}
+                        message={log.message}
+                    />
                 ))
             )}
 
