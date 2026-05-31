@@ -1,5 +1,6 @@
+import { Picker } from "@react-native-picker/picker";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Text,
@@ -9,12 +10,76 @@ import {
 
 import { useFleet } from "@/context/FleetContext";
 import { useLogs } from "@/context/LogContext";
+import type {
+    OrbitalStability,
+    SystemStatus,
+} from "@/types/satellite";
 
 const ControlPanel = () => {
     const { fleet, setFleet } = useFleet();
     const { addLog } = useLogs();
 
+    const [selectedSatelliteId, setSelectedSatelliteId] =
+        useState("");
+
     const [energy, setEnergy] = useState("");
+
+    const [communication, setCommunication] =
+        useState(true);
+
+    const [systemStatus, setSystemStatus] =
+        useState<SystemStatus>("operational");
+
+    const [orbitalStability, setOrbitalStability] =
+        useState<OrbitalStability>("stable");
+
+    useEffect(() => {
+        if (fleet.length === 0) return;
+
+        const satellite = fleet[0];
+
+        setSelectedSatelliteId(satellite.id);
+        setEnergy(satellite.energy.toString());
+        setCommunication(
+            satellite.communication
+        );
+        setSystemStatus(
+            satellite.systemStatus
+        );
+        setOrbitalStability(
+            satellite.orbitalStability
+        );
+    }, [fleet]);
+
+    const handleSatelliteChange = (
+        satelliteId: string
+    ) => {
+        const satellite = fleet.find(
+            (sat) => sat.id === satelliteId
+        );
+
+        if (!satellite) return;
+
+        setSelectedSatelliteId(
+            satellite.id
+        );
+
+        setEnergy(
+            satellite.energy.toString()
+        );
+
+        setCommunication(
+            satellite.communication
+        );
+
+        setSystemStatus(
+            satellite.systemStatus
+        );
+
+        setOrbitalStability(
+            satellite.orbitalStability
+        );
+    };
 
     const updateSatellite = () => {
         const energyValue = Number(energy);
@@ -30,12 +95,27 @@ const ControlPanel = () => {
             return;
         }
 
+        const previousSatellite =
+            fleet.find(
+                (sat) =>
+                    sat.id ===
+                    selectedSatelliteId
+            );
+
+        if (!previousSatellite) return;
+
         const updatedFleet = fleet.map(
             (satellite) => {
-                if (satellite.id === "1") {
+                if (
+                    satellite.id ===
+                    selectedSatelliteId
+                ) {
                     return {
                         ...satellite,
                         energy: energyValue,
+                        communication,
+                        systemStatus,
+                        orbitalStability,
                     };
                 }
 
@@ -43,14 +123,49 @@ const ControlPanel = () => {
             }
         );
 
-        console.log(updatedFleet);
         setFleet(updatedFleet);
 
-        addLog(
-            `Energia do SAT-01 alterada para ${energyValue}%`
-        );
+        if (
+            previousSatellite.energy !==
+            energyValue
+        ) {
+            addLog(
+                `${previousSatellite.name} energia alterada para ${energyValue}%`
+            );
+        }
 
-        setEnergy("");
+        if (
+            previousSatellite.communication !==
+            communication
+        ) {
+            addLog(
+                communication
+                    ? `${previousSatellite.name} recuperou comunicação`
+                    : `${previousSatellite.name} perdeu comunicação`
+            );
+        }
+
+        if (
+            previousSatellite.systemStatus !==
+            systemStatus
+        ) {
+            addLog(
+                `${previousSatellite.name} status alterado para ${systemStatus}`
+            );
+        }
+
+        if (
+            previousSatellite.orbitalStability !==
+            orbitalStability
+        ) {
+            addLog(
+                `${previousSatellite.name} estabilidade orbital alterada para ${orbitalStability}`
+            );
+        }
+
+        alert(
+            "Satélite atualizado com sucesso."
+        );
     };
 
     return (
@@ -66,24 +181,117 @@ const ControlPanel = () => {
             </Text>
 
             <Text>
-                Atualizar energia do SAT-01
+                Selecione um satélite
             </Text>
+
+            <Picker
+                selectedValue={
+                    selectedSatelliteId
+                }
+                onValueChange={
+                    handleSatelliteChange
+                }
+            >
+                {fleet.map((satellite) => (
+                    <Picker.Item
+                        key={satellite.id}
+                        label={satellite.name}
+                        value={satellite.id}
+                    />
+                ))}
+            </Picker>
+
+            <Text>Energia</Text>
 
             <TextInput
                 value={energy}
                 onChangeText={setEnergy}
                 keyboardType="numeric"
-                placeholder="Digite um valor"
                 style={{
                     borderWidth: 1,
                     padding: 10,
-                    marginVertical: 10,
+                    marginBottom: 12,
                 }}
             />
 
+            <Text>Comunicação</Text>
+
+            <Picker
+                selectedValue={communication}
+                onValueChange={
+                    setCommunication
+                }
+            >
+                <Picker.Item
+                    label="Online"
+                    value={true}
+                />
+
+                <Picker.Item
+                    label="Offline"
+                    value={false}
+                />
+            </Picker>
+
+            <Text>Status Operacional</Text>
+
+            <Picker
+                selectedValue={
+                    systemStatus
+                }
+                onValueChange={
+                    setSystemStatus
+                }
+            >
+                <Picker.Item
+                    label="Operational"
+                    value="operational"
+                />
+
+                <Picker.Item
+                    label="Failure"
+                    value="failure"
+                />
+
+                <Picker.Item
+                    label="Offline"
+                    value="offline"
+                />
+            </Picker>
+
+            <Text>
+                Estabilidade Orbital
+            </Text>
+
+            <Picker
+                selectedValue={
+                    orbitalStability
+                }
+                onValueChange={
+                    setOrbitalStability
+                }
+            >
+                <Picker.Item
+                    label="Stable"
+                    value="stable"
+                />
+
+                <Picker.Item
+                    label="Degraded"
+                    value="degraded"
+                />
+
+                <Picker.Item
+                    label="Critical"
+                    value="critical"
+                />
+            </Picker>
+
             <Button
-                title="Salvar"
-                onPress={updateSatellite}
+                title="Salvar Alterações"
+                onPress={
+                    updateSatellite
+                }
             />
 
             <Button
