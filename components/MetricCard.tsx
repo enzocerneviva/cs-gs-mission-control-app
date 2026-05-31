@@ -1,5 +1,10 @@
 import React from "react";
-import { Text, View } from "react-native";
+import {
+    Text,
+    View,
+} from "react-native";
+
+import { colors } from "@/theme/colors";
 
 type Props = {
     title: string;
@@ -13,18 +18,30 @@ const MetricCard = ({
     return (
         <View
             style={{
+                backgroundColor: colors.card,
+                borderRadius: 16,
+                padding: 16,
+                marginBottom: 12,
                 borderWidth: 1,
-                borderRadius: 8,
-                padding: 12,
-                marginBottom: 10,
+                borderColor: colors.border,
             }}
         >
-            <Text>{title}</Text>
+            <Text
+                style={{
+                    color: colors.textSecondary,
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                }}
+            >
+                {title}
+            </Text>
 
             <Text
                 style={{
-                    fontSize: 24,
+                    color: colors.text,
+                    fontSize: 32,
                     fontWeight: "bold",
+                    marginTop: 8,
                 }}
             >
                 {value}

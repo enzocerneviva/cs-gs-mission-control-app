@@ -1,99 +1,170 @@
 import { router } from "expo-router";
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
+import AppHeader from "@/components/AppHeader";
 import MetricCard from "@/components/MetricCard";
 import SatelliteCard from "@/components/SatelliteCard";
 import { useFleet } from "@/context/FleetContext";
+import { colors } from "@/theme/colors";
 
 const Dashboard = () => {
-
     const { fleet } = useFleet();
-
-    console.log(fleet);
 
     const monitoredSatellites = fleet.length;
 
     const operationalSatellites = fleet.filter(
-        (satellite) => satellite.systemStatus === "operational"
+        (sat) => sat.systemStatus === "operational"
     ).length;
 
     const lowEnergySatellites = fleet.filter(
-        (satellite) => satellite.energy < 20
+        (sat) => sat.energy < 20
     ).length;
 
     const offlineSatellites = fleet.filter(
-        (satellite) => !satellite.communication
+        (sat) => !sat.communication
     ).length;
 
     return (
-        <View style={{ padding: 16 }}>
-            <Text
-                style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    marginBottom: 20,
-                }}
-            >
-                Central de Monitoramento Espacial
-            </Text>
 
-            <View
-                style={{
-                    borderWidth: 1,
-                    padding: 12,
-                    marginBottom: 20,
-                    borderRadius: 8,
-                }}
-            >
+        <ScrollView
+            style={{
+                flex: 1,
+                backgroundColor: colors.background,
+            }}
+            contentContainerStyle={{
+                padding: 16,
+            }}
+        >
+            {<AppHeader title="Mission Control" showBack={false} />}
+            <View style={{ marginBottom: 20 }}>
+                <Text
+                    style={{
+                        color: colors.primary,
+                        fontSize: 12,
+                        letterSpacing: 2,
+                    }}
+                >
+                    GS MISSION CONTROL
+                </Text>
 
-                <MetricCard
-                    title="Satélites Monitorados"
-                    value={monitoredSatellites}
-                />
-
-                <MetricCard
-                    title="Operacionais"
-                    value={operationalSatellites}
-                />
-
-                <MetricCard
-                    title="Energia Baixa"
-                    value={lowEnergySatellites}
-                />
-
-                <MetricCard
-                    title="Sem Comunicação"
-                    value={offlineSatellites}
-                />
-                
+                <Text
+                    style={{
+                        color: colors.text,
+                        fontSize: 28,
+                        fontWeight: "bold",
+                    }}
+                >
+                    Fleet Overview
+                </Text>
             </View>
 
-            {fleet.map((satellite) => (
-                <SatelliteCard
-                    key={satellite.id}
-                    id={satellite.id}
-                    name={satellite.name}
-                    energy={satellite.energy}
-                    communication={satellite.communication}
-                    systemStatus={satellite.systemStatus}
-                />
-            ))}
+            {/* KPI GRID */}
+            <View
+                style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                }}
+            >
+                <View style={{ width: "48%" }}>
+                    <MetricCard
+                        title="Monitorados"
+                        value={monitoredSatellites}
+                    />
+                </View>
 
-            <Button
-                title="Abrir Painel de Controle"
-                onPress={() =>
-                    router.push("/control-painel")
-                }
-            />
+                <View style={{ width: "48%" }}>
+                    <MetricCard
+                        title="Operacionais"
+                        value={operationalSatellites}
+                    />
+                </View>
 
-            <Button
-                title="Ver Histórico de Logs"
-                onPress={() =>
-                    router.push("/logs")
-                }
-            />
-        </View>
+                <View style={{ width: "48%" }}>
+                    <MetricCard
+                        title="Energia Baixa"
+                        value={lowEnergySatellites}
+                    />
+                </View>
+
+                <View style={{ width: "48%" }}>
+                    <MetricCard
+                        title="Offline"
+                        value={offlineSatellites}
+                    />
+                </View>
+            </View>
+
+            {/* SATELLITES */}
+            <View style={{ marginTop: 20 }}>
+                <Text
+                    style={{
+                        color: colors.text,
+                        fontSize: 18,
+                        fontWeight: "bold",
+                        marginBottom: 10,
+                    }}
+                >
+                    Active Satellites
+                </Text>
+
+                {fleet.map((satellite) => (
+                    <SatelliteCard
+                        key={satellite.id}
+                        {...satellite}
+                    />
+                ))}
+            </View>
+
+            {/* NAVIGATION */}
+            <View style={{ marginTop: 20 }}>
+                <Pressable
+                    onPress={() =>
+                        router.push("/control-painel")
+                    }
+                    style={{
+                        backgroundColor: colors.primary,
+                        padding: 14,
+                        borderRadius: 10,
+                        marginBottom: 10,
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: "white",
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Open Control Painel
+                    </Text>
+                </Pressable>
+
+                <Pressable
+                    onPress={() =>
+                        router.push("/logs")
+                    }
+                    style={{
+                        backgroundColor: colors.card,
+                        padding: 14,
+                        borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: colors.border,
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: colors.text,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        View Logs
+                    </Text>
+                </Pressable>
+            </View>
+        </ScrollView>
     );
 };
 

@@ -1,8 +1,10 @@
 import React from "react";
 import {
-    Text,
-    View,
+    ScrollView,
+    Text
 } from "react-native";
+
+import { colors } from "@/theme/colors";
 
 type Props = {
     timestamp: string;
@@ -14,24 +16,37 @@ const LogItem = ({
     message,
 }: Props) => {
     return (
-        <View
+        <ScrollView
             style={{
-                borderWidth: 1,
-                borderRadius: 8,
-                padding: 12,
+                backgroundColor:
+                    colors.card,
+                borderRadius: 14,
+                padding: 14,
                 marginBottom: 10,
+                borderWidth: 1,
+                borderColor:
+                    colors.border,
             }}
         >
             <Text
                 style={{
-                    fontWeight: "bold",
+                    color:
+                        colors.textSecondary,
+                    fontSize: 12,
+                    marginBottom: 6,
                 }}
             >
                 {timestamp}
             </Text>
 
-            <Text>{message}</Text>
-        </View>
+            <Text
+                style={{
+                    color: colors.text,
+                }}
+            >
+                {message}
+            </Text>
+        </ScrollView>
     );
 };
 

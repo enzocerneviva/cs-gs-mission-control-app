@@ -7,7 +7,11 @@ export default function Layout() {
     return (
         <FleetProvider>
             <LogProvider>
-                <Stack />
+                <Stack
+                    screenOptions={{
+                        headerShown: false,
+                    }}
+                />
             </LogProvider>
         </FleetProvider>
     );

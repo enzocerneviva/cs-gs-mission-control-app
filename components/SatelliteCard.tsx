@@ -1,6 +1,8 @@
+import { colors } from "@/theme/colors";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
+import StatusBadge from "./StatusBadge";
 
 type SatelliteCardProps = {
     id: string;
@@ -23,29 +25,66 @@ const SatelliteCard = ({
         >
             <View
                 style={{
+                    backgroundColor: colors.card,
+                    borderRadius: 16,
+                    padding: 16,
+                    marginBottom: 14,
                     borderWidth: 1,
-                    borderRadius: 10,
-                    padding: 12,
-                    marginBottom: 12,
+                    borderColor: colors.border,
                 }}
             >
                 <Text
                     style={{
-                        fontSize: 18,
+                        color: colors.text,
+                        fontSize: 20,
                         fontWeight: "bold",
-                        marginBottom: 8,
                     }}
                 >
                     {name}
                 </Text>
 
-                <Text>Energia: {energy}%</Text>
-
-                <Text>
-                    Comunicação: {communication ? "Online" : "Offline"}
+                <Text
+                    style={{
+                        color: colors.textSecondary,
+                        marginTop: 10,
+                    }}
+                >
+                    Energia
                 </Text>
 
-                <Text>Status: {systemStatus}</Text>
+                <View
+                    style={{
+                        height: 10,
+                        backgroundColor: "#222",
+                        borderRadius: 10,
+                        overflow: "hidden",
+                        marginTop: 4,
+                        marginBottom: 12,
+                    }}
+                >
+                    <View
+                        style={{
+                            width: `${energy}%`,
+                            height: "100%",
+                            backgroundColor:
+                                energy < 20
+                                    ? colors.danger
+                                    : colors.success,
+                        }}
+                    />
+                </View>
+
+                <StatusBadge
+                    label={
+                        communication
+                            ? "Online"
+                            : "Offline"
+                    }
+                />
+
+                <StatusBadge
+                    label={systemStatus}
+                />
             </View>
         </Pressable>
     );
