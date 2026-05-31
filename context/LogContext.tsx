@@ -1,6 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
     createContext,
     useContext,
+    useEffect,
     useState,
 } from "react";
 
@@ -25,6 +27,44 @@ export const LogProvider = ({
     children: React.ReactNode;
 }) => {
     const [logs, setLogs] = useState<LogEntry[]>([]);
+
+    useEffect(() => {
+        const loadLogs = async () => {
+            try {
+                const storedLogs =
+                    await AsyncStorage.getItem("logs");
+
+                if (storedLogs) {
+                    setLogs(JSON.parse(storedLogs));
+                }
+            } catch (error) {
+                console.error(
+                    "Erro ao carregar logs:",
+                    error
+                );
+            }
+        };
+
+        loadLogs();
+    }, []);
+
+    useEffect(() => {
+        const saveLogs = async () => {
+            try {
+                await AsyncStorage.setItem(
+                    "logs",
+                    JSON.stringify(logs)
+                );
+            } catch (error) {
+                console.error(
+                    "Erro ao salvar logs:",
+                    error
+                );
+            }
+        };
+
+        saveLogs();
+    }, [logs]);
 
     const addLog = (message: string) => {
         const newLog: LogEntry = {
@@ -56,7 +96,7 @@ export const useLogs = () => {
 
     if (!context) {
         throw new Error(
-            "useLogs deve ser usado dentro de LogProvider"
+            "useLogs deve ser usado dentro do LogProvider"
         );
     }
 

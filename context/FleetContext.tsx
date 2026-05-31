@@ -1,6 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
     createContext,
     useContext,
+    useEffect,
     useState,
 } from "react";
 
@@ -21,9 +23,51 @@ export const FleetProvider = ({
 }: {
     children: React.ReactNode;
 }) => {
-    console.log("FleetProvider foi criado");
+    const [fleet, setFleet] = useState<Satellite[]>([]);
 
-    const [fleet, setFleet] = useState(mockFleet);
+    useEffect(() => {
+        const loadFleet = async () => {
+            try {
+                const storedFleet =
+                    await AsyncStorage.getItem("fleet");
+
+                if (storedFleet) {
+                    setFleet(JSON.parse(storedFleet));
+                } else {
+                    setFleet(mockFleet);
+                }
+            } catch (error) {
+                console.error(
+                    "Erro ao carregar frota:",
+                    error
+                );
+
+                setFleet(mockFleet);
+            }
+        };
+
+        loadFleet();
+    }, []);
+
+    useEffect(() => {
+        const saveFleet = async () => {
+            try {
+                await AsyncStorage.setItem(
+                    "fleet",
+                    JSON.stringify(fleet)
+                );
+            } catch (error) {
+                console.error(
+                    "Erro ao salvar frota:",
+                    error
+                );
+            }
+        };
+
+        if (fleet.length > 0) {
+            saveFleet();
+        }
+    }, [fleet]);
 
     return (
         <FleetContext.Provider
