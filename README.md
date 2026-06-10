@@ -145,8 +145,8 @@ Os engenheiros responsáveis por colocar esta missão no ar:
 | # | Nome Completo | RM |
 |:---:|---|:---:|
 | 👨‍💻 | `Enzo Cerneviva` | `563480` |
-| 👩‍💻 | `Victor Hugo` | `RM-564633` |
-| 👨‍💻 | `Matheus Lara` | `RM-564049` |
+| 👩‍💻 | `Victor Hugo` | `564633` |
+| 👨‍💻 | `Matheus Lara` | `564049` |
 
 ---
 
